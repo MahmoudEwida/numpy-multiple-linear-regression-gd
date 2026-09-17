@@ -28,8 +28,19 @@ def shuffle_xy(X, y, seed=42):
     indices = rng.permutation(len(X))
     return X[indices] , y[indices]
 
-# Step 2 - split_train_val_test (not yet solved)
-# TODO: implement
+# Step 2 - split_train_val_test
+def split_train_val_test(X, y, train_frac=0.6, val_frac=0.2):
+    n = len(X)
+    n_train = int(n * train_frac)
+    n_val = int(n * val_frac)
+    
+    val_end = n_train + n_val
+
+    return (
+        X[:n_train], y[:n_train],
+        X[n_train:val_end], y[n_train:val_end],
+        X[val_end:], y[val_end:]
+    )
 
 # Step 3 - compute_feature_stats (not yet solved)
 # TODO: implement
