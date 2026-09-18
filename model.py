@@ -310,8 +310,36 @@ def create_lr_model(learning_rate=0.01, epochs=1000, patience=50, seed=0):
         "val_losses": [],
     }
 
-# Step 25 - fit_lr_model (not yet solved)
-# TODO: implement
+# Step 25 - fit_lr_model
+def fit_lr_model(model, X_train, y_train, X_val, y_val):
+    # 1. Compute feature stats from training data
+    mean, std = compute_feature_stats(X_train)
+    model["mean"] = mean
+    model["std"] = std
+
+    # 2. Build design matrices for both train and val
+    X_tr_design = prepare_design_matrix(X_train, mean, std)
+    X_va_design = prepare_design_matrix(X_val, mean, std)
+
+    # 3. Train with Gradient Descent
+    best_weights, train_losses, val_losses = train_batch_gd(
+        X_tr_design,
+        y_train,
+        X_va_design,
+        y_val,
+        lr=model["learning_rate"],
+        epochs=model["epochs"],
+        patience=model["patience"],
+        seed=model["seed"],
+    )
+    model["weights"] = best_weights
+    model["train_losses"] = train_losses
+    model["val_losses"] = val_losses
+
+    # 4. Compute closed-form weights via Normal Equation
+    model["normal_weights"] = normal_equation(X_tr_design, y_train)
+
+    return model
 
 # Step 26 - predict_lr_model (not yet solved)
 # TODO: implement
