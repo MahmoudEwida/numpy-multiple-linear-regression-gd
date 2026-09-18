@@ -162,8 +162,24 @@ def update_early_stop_state(val_loss, best_val_loss, wait, weights, best_weights
 
     return best_val_loss, wait, best_weights, stop
 
-# Step 15 - init_training_state (not yet solved)
-# TODO: implement
+# Step 15 - init_training_state
+import numpy as np
+
+
+def init_training_state(n_features, seed=None):
+    # 1. Create the starting weights using your helper function
+    weights = initialize_weights(n_features, seed=seed)
+
+    # 2. Return the backpack dictionary with all 7 keys
+    return {
+        "weights": weights,
+        "best_weights": weights.copy(),  # A separate copy so modifying weights doesn't touch it
+        "best_val_loss": np.inf,  # Infinity (so round 1 is guaranteed to beat it!)
+        "wait": 0,  # We haven't failed any rounds yet
+        "train_losses": [],  # Empty list to store training history
+        "val_losses": [],  # Empty list to store validation history
+        "stopped": False,  # Early stop flag starts as False
+    }
 
 # Step 16 - run_one_epoch (not yet solved)
 # TODO: implement
